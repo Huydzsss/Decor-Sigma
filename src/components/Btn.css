@@ -1,0 +1,10 @@
+.btn-primary{
+    --bs-btn-bg: #a7856a;
+    --bs-btn-border-color: #a7856a;
+    --bs-btn-hover-bg: #8e715a;
+    --bs-btn-hover-border-color: #866a55;
+    --bs-btn-active-bg: #866a55;
+    --bs-btn-active-border-color: #7d6450;
+    --bs-btn-disabled-bg: #a7856a;
+    --bs-btn-disabled-border-color: #a7856a;
+}
