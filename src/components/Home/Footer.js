@@ -78,7 +78,7 @@ export default function Footer(){
     <div className="container">
       <div className="row align-items-center">
         <div className="col-md-6 col-12 text-center text-md-start mt-3 mt-md-0 order-1 order-md-0">
-          <p className="copyright text-white">© 2023 Dkoor. Made with <i className="icofont-heart-alt" /> by <a target="_blank" href="https://themeforest.net/user/bootxperts/portfolio">BootXperts</a></p>
+          <p className="copyright text-white">© 2024 Sigma. Made with <i className="icofont-heart-alt" /> by <a target="_blank" href="https://github.com/Huydzsss/Decor-Sigma">Decor</a></p>
         </div>
         
       </div>
