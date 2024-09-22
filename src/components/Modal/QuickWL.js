@@ -1,33 +1,32 @@
-import React from "react";
+import React from 'react';
 
-export default function QuickWL(){
-    return(
-        <div>
-           <aside className="product-action-modal modal fade" id="action-WishlistModal" tabIndex={-1} aria-hidden="true">
-  <div className="modal-dialog modal-dialog-centered">
-    <div className="modal-content">
-      <div className="modal-body">
-        <div className="product-action-view-content">
-          <div className="d-flex align-items-center">
-            <button type="button" className="btn-close" data-bs-dismiss="modal">
-              <i className="icofont-close" />
-            </button>
-            <div className="modal-action-messages">
-              <i className="fa fa-check-square-o" /> Added to wishlist successfully!
+export default function QuickWL({ wishlistItems = [] }) {
+    return (
+        <div className="modal fade" id="action-WLModal" tabIndex="-1" role="dialog" aria-labelledby="wishlistModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="wishlistModalLabel">Your Wishlist</h5>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div className="modal-body">
+                        {wishlistItems.length === 0 ? (
+                            <p>Your wishlist is empty.</p>
+                        ) : (
+                            <ul className="list-group">
+                                {wishlistItems.map((item, index) => (
+                                    <li className="list-group-item" key={index}>
+                                        {item.product_name} - {item.price}$
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div className="modal-action-product">
-            <div className="thumb">
-              <img src="assets/images/shop/1.jpg" alt="Organic Food Juice" width={466} height={320} />
-            </div>
-            <h4 className="product-name"><a href="single-product.html">Product with video</a></h4>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</aside>
-
-        </div>
-    )
+    );
 }

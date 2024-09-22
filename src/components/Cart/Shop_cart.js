@@ -7,10 +7,10 @@ export default function Shop_cart() {
 
     useEffect(() => {
         const storedCartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
-        setCartItems(storedCartItems.map(item => ({ ...item, quantity: 1 }))); // Thêm thuộc tính quantity mặc định là 1 cho mỗi sản phẩm
+        setCartItems(storedCartItems.map(item => ({ ...item, quantity: 1 })));
     }, []);
 
-    const totalAmount = cartItems.reduce((total, item) => total + item.price * item.quantity, 0); // Tổng tiền dựa trên số lượng
+    const totalAmount = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
     const handleRemoveItem = (index) => {
         const updatedCartItems = cartItems.filter((_, i) => i !== index);
@@ -22,7 +22,7 @@ export default function Shop_cart() {
         const updatedCartItems = [...cartItems];
         updatedCartItems[index].quantity = newQuantity;
         setCartItems(updatedCartItems);
-        sessionStorage.setItem('cartItems', JSON.stringify(updatedCartItems)); // Cập nhật sessionStorage
+        sessionStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
     };
 
     return (
@@ -68,10 +68,10 @@ export default function Shop_cart() {
                                                     <td className="cart-quality">
                                                         <div className="product-details-quality">
                                                             <div className="pro-qty">
-                                                                <input 
-                                                                    type="number" 
-                                                                    title="Quantity" 
-                                                                    value={item.quantity} 
+                                                                <input
+                                                                    type="number"
+                                                                    title="Quantity"
+                                                                    value={item.quantity}
                                                                     min="1"
                                                                     onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
                                                                 />
@@ -94,7 +94,7 @@ export default function Shop_cart() {
                             </div>
                             <div className="cart-shiping-update-wrapper">
                                 <div className="cart-shiping-btn continure-btn">
-                                    <a className="btn btn-link" href="shop.html"><i className="fa fa-angle-left" /> Back To Shop</a>
+                                    <a className="btn btn-link" href="/Shop"><i className="fa fa-angle-left" /> Back To Shop</a>
                                 </div>
                             </div>
                             <div className="grand-total-wrap mt-10 mt-lg-0">
@@ -105,7 +105,17 @@ export default function Shop_cart() {
                                     </div>
                                 </div>
                                 <div className="grand-total-btn">
-                                    <a className="btn btn-link" href="shop-checkout.html">Proceed to checkout</a>
+                                    <a
+                                        className="btn btn-link"
+                                        href="/Checkout"
+                                        onClick={() => {
+                                            sessionStorage.setItem('checkoutItems', JSON.stringify(cartItems));
+                                            setCartItems([]);
+                                            sessionStorage.setItem('cartItems', JSON.stringify([]));
+                                        }}
+                                    >
+                                        Proceed to checkout
+                                    </a>
                                 </div>
                             </div>
                         </div>

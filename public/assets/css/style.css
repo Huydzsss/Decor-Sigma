@@ -2547,22 +2547,22 @@ input:focus:-ms-input-placeholder {
   margin-right: 0;
 }
 .breadcrumb-item.active {
-  color: #1f2226;
+  color: orange;
 }
 .breadcrumb-item.active:before {
   display: none;
 }
 .breadcrumb-item.active:hover {
-  color: #1f2226;
+  color: orange;
 }
 .breadcrumb-item:hover {
-  color: #eb6f25;
+  color: yellow;
 }
 .breadcrumb-item a {
-  color: #1f2226;
+  color: orange;
 }
 .breadcrumb-item a:hover {
-  color: #eb6f25;
+  color: yellow;
 }
 .breadcrumb-item + .breadcrumb-item:before {
   display: none;

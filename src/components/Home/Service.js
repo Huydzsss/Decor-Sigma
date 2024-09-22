@@ -15,7 +15,7 @@ export default function Service(){
             {/*== Start Product Banner Item ==*/}
             <div className="product-banner-item">
               <div className="product-banner-thumb">
-                <a href="shop.html"><img src="assets/images/shop/banner/1.png" width={360} height={370} alt="Image-HasTech" /></a>
+                <a href="/Shop"><img src="assets/images/shop/banner/1.png" width={360} height={370} alt="Image-HasTech" /></a>
               </div>
               <div className="product-banner-content">
                 <h2 className="product-banner-title">Shop Sofa</h2>
@@ -27,7 +27,7 @@ export default function Service(){
             {/*== Start Product Banner Item ==*/}
             <div className="product-banner-item">
               <div className="product-banner-thumb">
-                <a href="shop.html"><img src="assets/images/shop/banner/2.png" width={360} height={370} alt="Image-HasTech" /></a>
+                <a href="/Shop"><img src="assets/images/shop/banner/2.png" width={360} height={370} alt="Image-HasTech" /></a>
               </div>
               <div className="product-banner-content">
                 <h2 className="product-banner-title">Shop Minimal</h2>
@@ -39,7 +39,7 @@ export default function Service(){
             {/*== Start Product Banner Item ==*/}
             <div className="product-banner-item">
               <div className="product-banner-thumb">
-                <a href="shop.html"><img src="assets/images/shop/banner/3.png" width={360} height={370} alt="Image-HasTech" /></a>
+                <a href="/Shop"><img src="assets/images/shop/banner/3.png" width={360} height={370} alt="Image-HasTech" /></a>
               </div>
               <div className="product-banner-content">
                 <h2 className="product-banner-title">Shop Chair</h2>
@@ -51,7 +51,7 @@ export default function Service(){
             {/*== Start Product Banner Item ==*/}
             <div className="product-banner-item">
               <div className="product-banner-thumb">
-                <a href="shop.html"><img src="assets/images/shop/banner/4.png" width={360} height={370} alt="Image-HasTech" /></a>
+                <a href="/Shop"><img src="assets/images/shop/banner/4.png" width={360} height={370} alt="Image-HasTech" /></a>
               </div>
               <div className="product-banner-content">
                 <h2 className="product-banner-title">Shop Table</h2>
@@ -63,7 +63,7 @@ export default function Service(){
             {/*== Start Product Banner Item ==*/}
             <div className="product-banner-item">
               <div className="product-banner-thumb">
-                <a href="shop.html"><img src="assets/images/shop/banner/5.png" width={360} height={370} alt="Image-HasTech" /></a>
+                <a href="/Shop"><img src="assets/images/shop/banner/5.png" width={360} height={370} alt="Image-HasTech" /></a>
               </div>
               <div className="product-banner-content">
                 <h2 className="product-banner-title">Shop Tree</h2>
@@ -75,7 +75,7 @@ export default function Service(){
             {/*== Start Product Banner Item ==*/}
             <div className="product-banner-item">
               <div className="product-banner-thumb">
-                <a href="shop.html"><img src="assets/images/shop/banner/6.png" width={360} height={370} alt="Image-HasTech" /></a>
+                <a href="/Shop"><img src="assets/images/shop/banner/6.png" width={360} height={370} alt="Image-HasTech" /></a>
               </div>
               <div className="product-banner-content">
                 <h2 className="product-banner-title">Shop Light</h2>

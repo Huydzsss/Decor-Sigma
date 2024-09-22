@@ -10,7 +10,7 @@ export default function Banner(){
         {/*== Start Product Banner Item ==*/}
         <div className="product-banner-item">
           <div className="product-banner-thumb">
-            <a href="shop.html"><img src="assets/images/shop/banner/v1.png" width={580} height={243} alt="Image-HasTech" /></a>
+            <a href="/Shop"><img src="assets/images/shop/banner/v1.png" width={580} height={243} alt="Image-HasTech" /></a>
           </div>
         </div>
         {/*== End Product Banner Item ==*/}
@@ -19,7 +19,7 @@ export default function Banner(){
         {/*== Start Product Banner Item ==*/}
         <div className="product-banner-item">
           <div className="product-banner-thumb">
-            <a href="shop.html"><img src="assets/images/shop/banner/v2.png" width={580} height={243} alt="Image-HasTech" /></a>
+            <a href="/Shop"><img src="assets/images/shop/banner/v2.png" width={580} height={243} alt="Image-HasTech" /></a>
           </div>
         </div>
         {/*== End Product Banner Item ==*/}

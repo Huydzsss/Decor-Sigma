@@ -4,24 +4,18 @@ import axios from "axios";
 import Header from "../Home/Header";
 import Footer from "../Home/Footer";
 import QuickCart from "../Modal/QuickCart"; // Import QuickCart
+import QuickView from "../Modal/QuickView";
+import QuickWL from "../Modal/QuickWL";
+import QuickCompare from "../Modal/QuickCompare";
 
 export default function ProductD() {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [cartItems, setCartItems] = useState([]);
+    const [wishlistItems, setWishlistItems] = useState([]);
+    const [compareItems, setCompareItems] = useState([]);
     const [error, setError] = useState(null);
-    useEffect(() => {
-        const handleBeforeUnload = (event) => {
-            event.preventDefault();
-
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, []);
+   
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -39,6 +33,12 @@ export default function ProductD() {
 
         const storedCartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
         setCartItems(storedCartItems);
+        const storedWishlistItems = JSON.parse(sessionStorage.getItem('wishlistItems')) || [];
+        setWishlistItems(storedWishlistItems);
+
+        const storedCompareItems = JSON.parse(sessionStorage.getItem('compareItems')) || [];
+        setCompareItems(storedCompareItems);
+   
     }, [id]);
 
     const handleAddToCart = (product) => {
@@ -50,6 +50,24 @@ export default function ProductD() {
         const quickCartModal = new window.bootstrap.Modal(document.getElementById('action-CartAddModal'));
         quickCartModal.show();
     };
+    const handleCompare = (product) => {
+        const updatedCompareItems = [...compareItems, product];
+        setCompareItems(updatedCompareItems);
+        sessionStorage.setItem('compareItems', JSON.stringify(updatedCompareItems));
+        const quickCompareModal = new window.bootstrap.Modal(document.getElementById('action-CompareModal'));
+        quickCompareModal.show();
+    };
+
+
+    const handleAddToWishlist = (product) => {
+        const updatedWishlistItems = [...wishlistItems, product];
+        setWishlistItems(updatedWishlistItems);
+        sessionStorage.setItem('wishlistItems', JSON.stringify(updatedWishlistItems));
+
+        const quickWLModal = new window.bootstrap.Modal(document.getElementById('action-WLModal'));
+        quickWLModal.show();
+    };
+
 
     if (error) {
         return <div>{error}</div>;
@@ -107,15 +125,13 @@ export default function ProductD() {
                                         <button className="btn btn-cart" onClick={() => handleAddToCart(product)}>ADD TO CART</button>
                                     </div>
                                     <div className="single-product-actions-item">
-                                        <button className="btn btn-icon"><i className="icon-heart" /></button>
+                                        <button className="btn btn-icon" onClick={() => handleAddToWishlist(product)}><i className="icon-heart" /></button>
                                     </div>
                                     <div className="single-product-actions-item">
-                                        <button className="btn btn-icon"><i className="icon-refresh" /></button>
+                                        <button className="btn btn-icon" onClick={()=> handleCompare(product)}><i className="icon-refresh" /></button>
                                     </div>
                                 </div>
-                                <div className="single-product-buy-now">
-                                    <a href="#/" className="btn btn-buy-now">Buy it Now</a>
-                                </div>
+                                
 
                             </div>
                             <ul className="single-product-meta">
@@ -148,8 +164,7 @@ export default function ProductD() {
                             {/* Description Start */}
                             <div className="tab-pane fade show active" id="product-description">
                                 <div className="single-product-description">
-                                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-                                    <p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham..</p>
+                                    <p>{product.description}</p>
                                 </div>
                             </div>
                             {/* Description End */}
@@ -303,9 +318,9 @@ export default function ProductD() {
                 </div>
             </div>
 
-            {/* QuickCart Modal */}
             <QuickCart cartItems={cartItems} />
-
+            <QuickWL wishlistItems={wishlistItems}/>
+            <QuickCompare compareItems={compareItems}/>
             <Footer />
         </div>
     );

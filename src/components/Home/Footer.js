@@ -45,11 +45,11 @@ export default function Footer(){
             <h4 className="widget-title widget-collapsed-title collapsed" data-bs-toggle="collapse" data-bs-target="#widgetTitleId-2">Information</h4>
             <div id="widgetTitleId-2" className="collapse widget-collapse-body">
               <ul className="widget-nav">
-                <li><a href="shop.html">New collection</a></li>
-                <li><a href="shop.html">Manufacturers</a></li>
-                <li><a href="shop.html">New products</a></li>
-                <li><a href="shop.html">Suppliers</a></li>
-                <li><a href="shop.html">Delivery &amp; returns</a></li>
+                <li><a href="/Shop">New collection</a></li>
+                <li><a href="/Shop">Manufacturers</a></li>
+                <li><a href="/Shop">New products</a></li>
+                <li><a href="/Shop">Suppliers</a></li>
+                <li><a href="/Shop">Delivery &amp; returns</a></li>
               </ul>
             </div>
           </div>

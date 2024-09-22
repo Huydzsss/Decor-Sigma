@@ -1,43 +1,85 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import HeaderS from "./HeaderS";
-import Footer from "../Home/Footer";
-import QuickView from "../Modal/QuickView";
-import QuickCart from "../Modal/QuickCart";
-import axios from "axios";
 import Header from "../Home/Header";
-import QuickWL from "../Modal/QuickWL";
+import QuickCart from "../Modal/QuickCart";
+import QuickView from "../Modal/QuickView";
+import Footer from "../Home/Footer";
+import axios from "axios";
+import "../Home/Text.css"
 import QuickCompare from "../Modal/QuickCompare";
+import QuickWL from "../Modal/QuickWL";
 
-export default function Shop() {
+export default function Bedroom() {
+    const [productCategories, setProductCategories] = useState([]);
     const [products, setProducts] = useState([]);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [cartItems, setCartItems] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [compareItems, setCompareItems] = useState([]);
     const [wishlistItems, setWishlistItems] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [cartItems, setCartItems] = useState([]);
     const [error, setError] = useState(null);
     const [sortOption, setSortOption] = useState("title-ascending");
     const [itemsPerPage, setItemsPerPage] = useState(12);
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/techwiz/products')
+        axios.get('http://localhost:3001/techwiz/category')
             .then(response => {
-                setProducts(response.data);
+                setCategories(response.data);
             })
             .catch(error => {
-                setError("There was an error fetching the products!");
-                console.error("There was an error fetching the products!", error);
+                setError("There was an error fetching the category!");
+                console.error("Error fetching category:", error);
             });
     }, []);
 
     useEffect(() => {
+        axios.get('http://localhost:3001/techwiz/product_categories')
+            .then(response => {
+                console.log("Product Categories Data:", response.data);
+                setProductCategories(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching product_categories:', error);
+            });
+    }, []);
+    console.log("Products Data:", products);
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/techwiz/products')
+            .then(response => {
+                console.log("Products:", response.data);
+                setProducts(response.data);
+            })
+            .catch(error => {
+                setError("There was an error fetching the products!");
+                console.error("Error fetching products:", error);
+            });
+    }, []);
+
+
+    useEffect(() => {
+        const livingRoomCategory = categories.find(category => category.category_name === 'Phòng ngủ');
+        if (livingRoomCategory) {
+            setSelectedCategory(livingRoomCategory.id);
+        }
+    }, [categories]);
+
+    useEffect(() => {
         const storedCartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
         setCartItems(storedCartItems);
-
+    }, []);
+  
+    useEffect(() => {
         const storedWishlistItems = JSON.parse(sessionStorage.getItem('wishlistItems')) || [];
         setWishlistItems(storedWishlistItems);
     }, []);
+    useEffect(() => {
+        const storedCompareItems = JSON.parse(sessionStorage.getItem('compareItems')) || [];
+        setCompareItems(storedCompareItems);
+    }, []);
+
 
     const handleQuickView = (product) => {
         setSelectedProduct(product);
@@ -80,6 +122,11 @@ export default function Shop() {
         setCurrentPage(1);
     };
 
+    const handleCategoryChange = (categoryId) => {
+        setSelectedCategory(Number(categoryId));
+        setCurrentPage(1);
+    };
+
     const sortedProducts = [...products].sort((a, b) => {
         switch (sortOption) {
             case "title-ascending":
@@ -99,22 +146,61 @@ export default function Shop() {
         }
     });
 
+    console.log("Selected Category:", selectedCategory);
+    console.log("All Products:", products);
+    const filteredProducts = productCategories.filter(product => {
+        return product.category_id === selectedCategory;
+    });
+
+    console.log(typeof products.category_id, typeof selectedCategory);
+
+
+    console.log("Filtered Products:", filteredProducts);
     const indexOfLastProduct = currentPage * itemsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-    const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-    const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
 
     if (error) {
         return <div>{error}</div>;
     }
 
+    console.log("Current Products:", products);
+    console.log("Selected Category:", selectedCategory);
+    console.log("Product Categories:", productCategories);
+    console.log("Filtered Products:", filteredProducts);
+
     return (
         <div>
             <Header cartItems={cartItems} />
-            <HeaderS />
+            <div className="page-header-area">
+                <div className="page-header-content bg-img" data-bg-img="https://th.bing.com/th/id/R.9cef2212f76a5356cd7a2842fe6c5d19?rik=Ir5JGHI2P4DmBQ&pid=ImgRaw&r=0">
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item" ><a href="/">Home</a></li>
+                        <li className="breadcrumb-item active "  aria-current="/Dining">Dining</li>
+                    </ol>
+                </div>
+            </div>
             <div className="product-area section-space">
                 <div className="container">
                     <div className="shop-top-bar">
+                        <div className="shop-top-bar-item">
+                            <label htmlFor="Categories">Category :</label>
+                            <select
+                                className="select-category"
+                                name="Categories"
+                                id="Categories"
+                                onChange={(e) => handleCategoryChange(e.target.value)}
+                            >
+                                <option value="">All Categories</option>
+                                {productCategories.map(category => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.category_name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                         <div className="shop-top-bar-item">
                             <label htmlFor="SortBy">Sort by :</label>
                             <select className="select-shoing" name="SortBy" id="SortBy" onChange={handleSortChange}>
@@ -125,9 +211,6 @@ export default function Shop() {
                                 <option value="created-descending">Date, new to old</option>
                                 <option value="created-ascending">Date, old to new</option>
                             </select>
-                        </div>
-                        <div className="shop-top-bar-item">
-                            <p>Showing {indexOfFirstProduct + 1} - {Math.min(indexOfLastProduct, sortedProducts.length)} of {sortedProducts.length} results</p>
                         </div>
                         <div className="shop-top-bar-item">
                             <label htmlFor="paginateBy">Show :</label>
@@ -146,6 +229,7 @@ export default function Shop() {
                             </select>
                         </div>
                     </div>
+
 
                     <div className="tab-content">
                         <div className="tab-pane fade show active">
@@ -167,23 +251,19 @@ export default function Shop() {
                                                     >
                                                         <i className="icon-magnifier" />
                                                     </button>
-                                                    <button
-                                                        type="button"
-                                                        className="product-action-btn action-btn-wishlist"
-                                                        data-tooltip-text="Add to wishlist"
-                                                        onClick={() => handleAddToWishlist(product)}
+                                                    <button type="button" className="product-action-btn action-btn-wishlist" 
+                                                    data-tooltip-text="Add to wishlist"
+                                                    onClick={() => handleAddToWishlist(product)}
                                                     >
                                                         <i className="icon-heart" />
                                                     </button>
-                                                    <button
-                                                        type="button"
-                                                        className="product-action-btn action-btn-compare"
-                                                        data-tooltip-text="Add to compare"
-                                                        onClick={() => handleCompare(product)}
-                                                    >
+                                                    <button type="button" className="product-action-btn action-btn-compare"
+                                                     data-tooltip-text="Add to compare"
+                                                     onClick={() =>handleCompare(product)}
+                                                     >
+
                                                         <i className="icon-refresh" />
                                                     </button>
-
                                                     <button
                                                         type="button"
                                                         className="product-action-btn action-btn-cart"
@@ -205,7 +285,6 @@ export default function Shop() {
                         </div>
                     </div>
 
-                    {/* Pagination Controls */}
                     <ul className="page-numbers justify-content-center">
                         <li>
                             <button className="page-number prev" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
@@ -230,12 +309,13 @@ export default function Shop() {
                     </ul>
                 </div>
             </div>
-            <QuickView product={selectedProduct} />
-            <QuickCart cartItems={cartItems} />
-            <QuickWL wishlistItems={wishlistItems} />
-            <QuickCompare compareItems={compareItems} />
 
             <Footer />
+
+            <QuickView product={selectedProduct} />
+            <QuickCart cartItems={cartItems} />
+            <QuickCompare compareItems={compareItems}/>
+            <QuickWL wishlistItems={wishlistItems}/>
         </div>
     );
 }

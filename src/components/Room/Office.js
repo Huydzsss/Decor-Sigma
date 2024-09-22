@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../Home/Header";
-import HeaderS from "../Shop/HeaderS";
 import QuickCart from "../Modal/QuickCart";
 import QuickView from "../Modal/QuickView";
 import Footer from "../Home/Footer";
 import axios from "axios";
+import "../Home/Text.css"
+import QuickCompare from "../Modal/QuickCompare";
+import QuickWL from "../Modal/QuickWL";
 
-
-export default function Louise() {
+export default function Bedroom() {
+    const [productCategories, setProductCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [compareItems, setCompareItems] = useState([]);
+    const [wishlistItems, setWishlistItems] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [cartItems, setCartItems] = useState([]);
@@ -20,29 +24,62 @@ export default function Louise() {
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/techwiz/product_categories')
+        axios.get('http://localhost:3001/techwiz/category')
             .then(response => {
                 setCategories(response.data);
             })
             .catch(error => {
-                setError("There was an error fetching the categories!");
-                console.error("There was an error fetching the categories!", error);
+                setError("There was an error fetching the category!");
+                console.error("Error fetching category:", error);
             });
+    }, []);
 
+    useEffect(() => {
+        axios.get('http://localhost:3001/techwiz/product_categories')
+            .then(response => {
+                console.log("Product Categories Data:", response.data);
+                setProductCategories(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching product_categories:', error);
+            });
+    }, []);
+    console.log("Products Data:", products);
+
+    useEffect(() => {
         axios.get('http://localhost:3001/techwiz/products')
             .then(response => {
+                console.log("Products:", response.data);
                 setProducts(response.data);
             })
             .catch(error => {
                 setError("There was an error fetching the products!");
-                console.error("There was an error fetching the products!", error);
+                console.error("Error fetching products:", error);
             });
     }, []);
+
+
+    useEffect(() => {
+        const livingRoomCategory = categories.find(category => category.category_name === 'Phòng ngủ');
+        if (livingRoomCategory) {
+            setSelectedCategory(livingRoomCategory.id);
+        }
+    }, [categories]);
 
     useEffect(() => {
         const storedCartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
         setCartItems(storedCartItems);
     }, []);
+  
+    useEffect(() => {
+        const storedWishlistItems = JSON.parse(sessionStorage.getItem('wishlistItems')) || [];
+        setWishlistItems(storedWishlistItems);
+    }, []);
+    useEffect(() => {
+        const storedCompareItems = JSON.parse(sessionStorage.getItem('compareItems')) || [];
+        setCompareItems(storedCompareItems);
+    }, []);
+
 
     const handleQuickView = (product) => {
         setSelectedProduct(product);
@@ -57,6 +94,23 @@ export default function Louise() {
         const quickCartModal = new window.bootstrap.Modal(document.getElementById('action-CartAddModal'));
         quickCartModal.show();
     };
+    const handleCompare = (product) => {
+        const updatedCompareItems = [...compareItems, product];
+        setCompareItems(updatedCompareItems);
+        sessionStorage.setItem('compareItems', JSON.stringify(updatedCompareItems));
+        const quickCompareModal = new window.bootstrap.Modal(document.getElementById('action-CompareModal'));
+        quickCompareModal.show();
+    };
+
+
+    const handleAddToWishlist = (product) => {
+        const updatedWishlistItems = [...wishlistItems, product];
+        setWishlistItems(updatedWishlistItems);
+        sessionStorage.setItem('wishlistItems', JSON.stringify(updatedWishlistItems));
+
+        const quickWLModal = new window.bootstrap.Modal(document.getElementById('action-WLModal'));
+        quickWLModal.show();
+    };
 
     const handleSortChange = (event) => {
         setSortOption(event.target.value);
@@ -69,7 +123,7 @@ export default function Louise() {
     };
 
     const handleCategoryChange = (categoryId) => {
-        setSelectedCategory(categoryId);
+        setSelectedCategory(Number(categoryId));
         setCurrentPage(1);
     };
 
@@ -92,26 +146,61 @@ export default function Louise() {
         }
     });
 
-    const filteredProducts = selectedCategory
-        ? sortedProducts.filter(product => product.category_id === selectedCategory)
-        : sortedProducts;
+    console.log("Selected Category:", selectedCategory);
+    console.log("All Products:", products);
+    const filteredProducts = productCategories.filter(product => {
+        return product.category_id === selectedCategory;
+    });
 
+    console.log(typeof products.category_id, typeof selectedCategory);
+
+
+    console.log("Filtered Products:", filteredProducts);
     const indexOfLastProduct = currentPage * itemsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
     const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
     const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
+
     if (error) {
         return <div>{error}</div>;
     }
 
+    console.log("Current Products:", products);
+    console.log("Selected Category:", selectedCategory);
+    console.log("Product Categories:", productCategories);
+    console.log("Filtered Products:", filteredProducts);
+
     return (
         <div>
             <Header cartItems={cartItems} />
-            <HeaderS />
+            <div className="page-header-area">
+                <div className="page-header-content bg-img" data-bg-img="https://angcovat.vn/imagesdata/KN123038/cach-bo-tri-phong-lam-viec-tai-nha-nhu-the-nao.jpg">
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item" ><a href="/">Home</a></li>
+                        <li className="breadcrumb-item active "  aria-current="/Office">Office</li>
+                    </ol>
+                </div>
+            </div>
             <div className="product-area section-space">
                 <div className="container">
                     <div className="shop-top-bar">
+                        <div className="shop-top-bar-item">
+                            <label htmlFor="Categories">Category :</label>
+                            <select
+                                className="select-category"
+                                name="Categories"
+                                id="Categories"
+                                onChange={(e) => handleCategoryChange(e.target.value)}
+                            >
+                                <option value="">All Categories</option>
+                                {productCategories.map(category => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.category_name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                         <div className="shop-top-bar-item">
                             <label htmlFor="SortBy">Sort by :</label>
                             <select className="select-shoing" name="SortBy" id="SortBy" onChange={handleSortChange}>
@@ -122,9 +211,6 @@ export default function Louise() {
                                 <option value="created-descending">Date, new to old</option>
                                 <option value="created-ascending">Date, old to new</option>
                             </select>
-                        </div>
-                        <div className="shop-top-bar-item">
-                            <p>Showing {indexOfFirstProduct + 1} - {Math.min(indexOfLastProduct, filteredProducts.length)} of {filteredProducts.length} results</p>
                         </div>
                         <div className="shop-top-bar-item">
                             <label htmlFor="paginateBy">Show :</label>
@@ -143,6 +229,7 @@ export default function Louise() {
                             </select>
                         </div>
                     </div>
+
 
                     <div className="tab-content">
                         <div className="tab-pane fade show active">
@@ -164,10 +251,17 @@ export default function Louise() {
                                                     >
                                                         <i className="icon-magnifier" />
                                                     </button>
-                                                    <button type="button" className="product-action-btn action-btn-wishlist" data-tooltip-text="Add to wishlist">
+                                                    <button type="button" className="product-action-btn action-btn-wishlist" 
+                                                    data-tooltip-text="Add to wishlist"
+                                                    onClick={() => handleAddToWishlist(product)}
+                                                    >
                                                         <i className="icon-heart" />
                                                     </button>
-                                                    <button type="button" className="product-action-btn action-btn-compare" data-tooltip-text="Compare">
+                                                    <button type="button" className="product-action-btn action-btn-compare"
+                                                     data-tooltip-text="Add to compare"
+                                                     onClick={() =>handleCompare(product)}
+                                                     >
+
                                                         <i className="icon-refresh" />
                                                     </button>
                                                     <button
@@ -191,7 +285,6 @@ export default function Louise() {
                         </div>
                     </div>
 
-                    {/* Pagination Controls */}
                     <ul className="page-numbers justify-content-center">
                         <li>
                             <button className="page-number prev" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
@@ -216,9 +309,13 @@ export default function Louise() {
                     </ul>
                 </div>
             </div>
+
+            <Footer />
+
             <QuickView product={selectedProduct} />
             <QuickCart cartItems={cartItems} />
-            <Footer />
+            <QuickCompare compareItems={compareItems}/>
+            <QuickWL wishlistItems={wishlistItems}/>
         </div>
     );
 }

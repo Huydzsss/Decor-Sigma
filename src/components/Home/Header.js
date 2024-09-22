@@ -6,10 +6,16 @@ export default function Header({ cartProduct }) {
   const [cartItems, setCartItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
   useEffect(() => {
     const storedCartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
     setCartItems(storedCartItems);
+
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      setIsLoggedIn(true);
+    }
   }, [cartProduct]);
 
   useEffect(() => {
@@ -80,15 +86,20 @@ export default function Header({ cartProduct }) {
                   <div className="dropdown-menu header-dropdown-menu" aria-labelledby="dropdownCurrency">
                     <h6 className="header-dropdown-menu-title">Currency</h6>
                     <ul>
-                      <li><a href="javascript:void(0)">USD - US Dollar</a></li>
-                      <li><a href="javascript:void(0)">EUR - Euro</a></li>
-                      <li><a href="javascript:void(0)">GBP - British Pound</a></li>
+                      <li><a href="/Shop_w">Whislist</a></li>
+                      <li><a href="/Shop_cart">Cart</a></li>
+                      <li><a href="/Compare">Compare</a></li>
                     </ul>
                     <h6 className="header-dropdown-menu-title style-two">Account</h6>
                     <ul>
-                      <li><a href="/LoginResgister">Login</a></li>
-                      <li><a href="login-register.html">Register</a></li>
-                      <li><a href="account.html">My Account</a></li>
+                      {!isLoggedIn ? (
+                        <>
+                          <li><a href="/Login">Login</a></li>
+                          <li><a href="/Register">Register</a></li>
+                        </>
+                      ) : (
+                        <li><a href="/Account">My Account</a></li>
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -106,25 +117,16 @@ export default function Header({ cartProduct }) {
                 <div className="header-navigation ms-0">
                   <ul className="main-nav">
                     <li className="main-nav-item has-submenu"><a className="main-nav-link" href="/">Home</a></li>
-                    <li className="main-nav-item has-submenu"><a className="main-nav-link" href="blog.html">Blog</a>
-                      <ul className="submenu-nav">
-                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="blog.html">Blog Grid</a></li>
-                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="blog-left-sidebar.html">Blog Left Sidebar</a></li>
-                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
-                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="blog-details.html">Blog Details</a></li>
-                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="blog-details-left-sidebar.html">Blog Details Left Sidebar</a></li>
-                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="blog-details-right-sidebar.html">Blog Details Right Sidebar</a></li>
-                      </ul>
-                    </li>
+                    
                     <li className="main-nav-item has-submenu position-static"><a className="main-nav-link" href="/Shop">Shop</a></li>
-                    <li className="main-nav-item has-submenu"><a className="main-nav-link" href="blog.html">Room</a>
+                    <li className="main-nav-item has-submenu"><a className="main-nav-link" href="#">Room</a>
                       <ul className="submenu-nav">
-                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="blog.html">Lounge</a></li>
-                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="blog-left-sidebar.html">Bedroom</a></li>
-                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="blog-right-sidebar.html">Kitchen</a></li>
-                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="blog-details.html">Dining room</a></li>
-                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="blog-details-left-sidebar.html">Office</a></li>
-                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="blog-details-right-sidebar.html">Out door</a></li>
+                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="/Lounge">Lounge</a></li>
+                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="/Bedroom">Bedroom</a></li>
+                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="/Kitchen">Kitchen</a></li>
+                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="/Dining">Dining room</a></li>
+                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="/Office">Office</a></li>
+                        <li className="submenu-nav-item"><a className="submenu-nav-link" href="/Outdoor">Out door</a></li>
                       </ul>
                     </li>
                     <li className="main-nav-item"><a className="main-nav-link" href="/Contact">Contact</a></li>
@@ -186,7 +188,6 @@ export default function Header({ cartProduct }) {
                 </div>
                 <div className="cart-checkout-btn">
                   <a className="cart-btn" href="/Shop_cart">view cart</a>
-                  <a className="checkout-btn" href="/checkout">checkout</a>
                 </div>
               </div>
             </div>
@@ -207,61 +208,28 @@ export default function Header({ cartProduct }) {
           <div className="res-mobile-menu">
             <nav id="offcanvasNav" className="offcanvas-menu">
               <ul>
-                <li><a href="javascript:void(0)">Home</a>
+                <li><a href="/">Home</a>
+                  
+                </li>
+                <li><a href="/Shop">Shop</a>
+                  
+                </li>
+                <li><a href="javascript:void(0)">Room</a>
                   <ul>
-                    <li><a href="index-2.html">Home One</a></li>
-                    <li><a href="index-two.html">Home Two</a></li>
-                    <li><a href="index-three.html">Home Three</a></li>
-                    <li><a href="index-four.html">Home Four</a></li>
+                    <li><a href="/Louge">Louge</a></li>
+                    <li><a href="/Bedroom">Bedroom</a></li>
+                    <li><a href="/Kitchen">Kitchen</a></li>
+                    <li><a href="/Dining">Dining room</a></li>
+                    <li><a href="/Office">Office</a></li>
+                    <li><a href="/Outdoor">Out door</a></li>
+
+
                   </ul>
                 </li>
-                <li><a href="javascript:void(0)">Shop</a>
-                  <ul>
-                    <li><a href="javascript:void(0)">Shop Layout</a>
-                      <ul>
-                        <li><a href="shop-three-columns.html">Shop 3 Column</a></li>
-                        <li><a href="shop-four-columns.html">Shop 4 Column</a></li>
-                        <li><a href="shop.html">Shop Left Sidebar</a></li>
-                        <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="javascript:void(0)">Single Product</a>
-                      <ul>
-                        <li><a href="shop-single-product.html">Single Product Normal</a></li>
-                        <li><a href="shop-single-product-sticky-content.html">Product Sticky Content</a></li>
-                        <li><a href="shop-single-product-thumbnail-right.html">Product Thumbnail Right</a></li>
-                        <li><a href="shop-single-product-gallery.html">Single Product Gallery</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="javascript:void(0)">Others Pages</a>
-                      <ul>
-                        <li><a href="shop-cart.html">Shopping Cart</a></li>
-                        <li><a href="shop-checkout.html">Checkout</a></li>
-                        <li><a href="shop-wishlist.html">Wishlist</a></li>
-                        <li><a href="shop-compare.html">Compare</a></li>
-                      </ul>
-                    </li>
-                  </ul>
+                <li><a href="/AboutUs">About us</a>
+                  
                 </li>
-                <li><a href="javascript:void(0)">Pages</a>
-                  <ul>
-                    <li><a href="about-us.html">About</a></li>
-                    <li><a href="account.html">Account</a></li>
-                    <li><a href="faq.html">Faq</a></li>
-                    <li><a href="page-not-found.html">Page Not Found</a></li>
-                  </ul>
-                </li>
-                <li><a href="javascript:void(0)">Blog</a>
-                  <ul>
-                    <li><a href="blog.html">Blog Grid</a></li>
-                    <li><a href="blog-left-sidebar.html">Blog Left Sidebar</a></li>
-                    <li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
-                    <li><a href="blog-details.html">Blog Details</a></li>
-                    <li><a href="blog-details-left-sidebar.html">Blog Details Left Sidebar</a></li>
-                    <li><a href="blog-details-right-sidebar.html">Blog Details Right Sidebar</a></li>
-                  </ul>
-                </li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="/Contact">Contact</a></li>
               </ul>
             </nav>
           </div>
@@ -269,9 +237,9 @@ export default function Header({ cartProduct }) {
             <ul>
               <li><a href="javascript:void(0)">Currency</a>
                 <ul>
-                  <li><a href="javascript:void(0)">USD - US Dollar</a></li>
-                  <li><a href="javascript:void(0)">EUR - Euro</a></li>
-                  <li><a href="javascript:void(0)">GBP - British Pound</a></li>
+                  <li><a href="/Shop_w">Whist List</a></li>
+                  <li><a href="/Compare">Compare</a></li>
+                  <li><a href="/Cart">Cart</a></li>
                 </ul>
               </li>
               <li><a href="javascript:void(0)">Account</a>
